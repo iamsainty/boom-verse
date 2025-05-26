@@ -3,7 +3,7 @@ import Navigation from '../components/Navigation'
 const Feed = () => {
   return (
     <div className='flex flex-col md:flex-row'>
-      <div className='w-full md:w-1/5 h-screen flex items-center'>
+      <div className='w-full md:w-1/5 md:h-screen flex items-center'>
         <Navigation tabActive="/feed" />
       </div>
       <div className='w-full md:w-4/5'>

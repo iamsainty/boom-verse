@@ -50,7 +50,8 @@ const Navigation = ({ tabActive }) => {
   }
 
   return (
-    <aside className="sticky top-0 w-full h-[80vh] p-6 flex flex-col items-center gap-8">
+    <>
+    <aside className="sticky top-0 w-full h-[80vh] p-6 flex-col items-center gap-8 hidden md:flex">
       {/* User Info */}
       <div className="flex flex-col items-center text-center">
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mb-2 bg-blue-100 text-blue-600">
@@ -63,17 +64,17 @@ const Navigation = ({ tabActive }) => {
       {/* Navigation Tabs */}
       <nav className="w-full flex flex-col gap-2.5">
         {tabs.map((tab) => {
-          const isActive = tab.path === tabActive;
-          return (
-            <Link
-              key={tab.name}
-              to={tab.path}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 text-sm ${
-                isActive
-                  ? 'bg-blue-100 text-blue-600 font-semibold'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600'
-              }`}
-            >
+            const isActive = tab.path === tabActive;
+            return (
+                <Link
+                key={tab.name}
+                to={tab.path}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 text-sm ${
+                    isActive
+                    ? 'bg-blue-100 text-blue-600 font-semibold'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600'
+                }`}
+                >
               {tab.icon}
               {tab.name}
             </Link>
@@ -82,12 +83,44 @@ const Navigation = ({ tabActive }) => {
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-all cursor-pointer"
-        >
+          >
           <MdOutlinePowerSettingsNew size={18} />
           Logout
         </button>
       </nav>
     </aside>
+    <div className="md:hidden w-full absolute bottom-0 p-4 bg-white border-t border-gray-400 shadow-sm">
+      <div className="flex items-center justify-evenly w-full space-x-1.5">
+        {tabs.map((tab) => {
+          const isActive = tab.path === tabActive;
+          return (
+            <Link
+              key={tab.name}
+              to={tab.path}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex flex-col items-center px-4 py-2 rounded-lg transition-all duration-200 text-sm ${
+                isActive
+                  ? 'bg-blue-100 text-blue-600 font-semibold'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600'
+              }`}
+            >
+              {tab.icon}
+              <span className='text-xs'>{tab.name}</span>
+            </Link>
+          );
+        })}
+
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex flex-col items-center px-4 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-all cursor-pointer"
+        >
+          <MdOutlinePowerSettingsNew size={20} />
+          <span className='text-xs'>Logout</span>
+        </button>
+      </div>
+    </div>
+    </>
   );
 };
 
