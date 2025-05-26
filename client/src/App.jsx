@@ -4,6 +4,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import './index.css';
 import { UserAuthProvider } from './context/userAuth';
+import Feed from './pages/Feed';
 function App() {
 
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/feed" element={<Feed />} /> 
       </Routes>
       </UserAuthProvider>
     </Router>

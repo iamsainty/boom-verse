@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaRocket } from 'react-icons/fa';
 import { MdOutlineVideoLibrary, MdStars } from 'react-icons/md';
 import { PiVideoCameraFill } from 'react-icons/pi';
@@ -11,8 +11,16 @@ export default function Login() {
     password: '',
   });
 
-  const { login } = useUserAuth();
+  const { login, user, fetchUser } = useUserAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUser();
+
+    if (user) {
+      navigate('/feed');
+    }
+  }, [user, navigate, fetchUser]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

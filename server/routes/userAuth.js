@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../middleware/verifyToken");
 router.post("/register", async (req, res) => {
   try {
     const { name, username, password } = req.body;
@@ -21,7 +22,7 @@ router.post("/register", async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully", token });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error });
   }
 });
 
