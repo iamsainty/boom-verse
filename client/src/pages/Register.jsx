@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { FaUserPlus, FaArrowRight, FaRocket } from 'react-icons/fa';
+import { FaRocket } from 'react-icons/fa';
 import { MdOutlineVideoLibrary, MdStars } from 'react-icons/md';
 import { PiVideoCameraFill } from 'react-icons/pi';
+import useUserAuth from '../context/userAuth';
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -11,13 +12,26 @@ export default function Register() {
     password: '',
   });
 
+  const { register } = useUserAuth();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Register data:', form);
+    try {
+      const result = await register(form.name, form.username, form.password);
+      if (result) {
+        navigate('/feed');
+      }
+      else {
+        alert(result);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
   };
 
   return (
@@ -105,4 +119,4 @@ export default function Register() {
       </div>
     </div>
   );
-}
+  }
