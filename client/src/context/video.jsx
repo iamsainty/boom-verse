@@ -4,8 +4,10 @@ const VideoContext = createContext(null);
 
 export const VideoProvider = ({children}) => {
 
-    const serverUrl = "http://localhost:3000";
+  // const serverUrl = "http://localhost:3000";
+  const serverUrl = "https://boom-verse-server.vercel.app/";
 
+  
     const uploadVideo = async (videoData) => {
         try {
             const token = localStorage.getItem("token");

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
 import useVideo from '../context/video';
+import { useNavigate } from 'react-router-dom';
+import useUserAuth from '../context/userAuth';
 const Upload = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -9,6 +11,22 @@ const Upload = () => {
   const [videoUrl, setVideoUrl] = useState('');
   const [price, setPrice] = useState(0);
   const [thumbnail, setThumbnail] = useState(null);
+
+  const { user, fetchUser } = useUserAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const fetch = async () => {
+      if (!user && token) {
+        fetchUser();
+      }
+    }
+    fetch();
+    if (!user || !token) {
+      navigate('/login');
+    }
+  }, [user, navigate, fetchUser]);  
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
@@ -39,6 +57,7 @@ const Upload = () => {
     
     try {
       const result = await uploadVideo(formData);
+      navigate('/feed');
       console.log(result);
     } catch (error) {
       console.error("Error uploading video:", error);

@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import useUserAuth from '../context/userAuth';
-
+import { useNavigate } from 'react-router-dom';
 const Profile = () => {
-  const { user } = useUserAuth();
+  const { user, fetchUser } = useUserAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const fetch = async () => {
+      if (!user && token) {
+        fetchUser();
+      }
+    }
+    fetch();
+    if (!user || !token) {
+      navigate('/login');
+    }
+  }, [user, navigate, fetchUser]);
 
   return (
     <div className="flex flex-col md:flex-row">

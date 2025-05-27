@@ -64,11 +64,11 @@ router.get("/getvideos/:page", async (req, res) => {
     const page = parseInt(req.params.page);
     const videos = await Video.find()
       .sort({ createdAt: -1 })
-      .skip((page - 1) * 6)
-      .limit(6);
+      .skip((page - 1) * 5)
+      .limit(5);
 
     const totalVideos = await Video.countDocuments();
-    const totalPages = Math.ceil(totalVideos / 6);
+    const totalPages = Math.ceil(totalVideos / 5);
 
     res.status(200).json({ videos, totalPages });
   } catch (error) {

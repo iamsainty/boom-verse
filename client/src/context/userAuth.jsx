@@ -5,7 +5,8 @@ const UserAuthContext = createContext();
 export const UserAuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const serverUrl = "http://localhost:3000";
+  // const serverUrl = "http://localhost:3000";
+  const serverUrl = "https://boom-verse-server.vercel.app/";
 
   useEffect(() => {
     const checkUser = async () => {

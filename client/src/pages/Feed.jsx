@@ -30,23 +30,23 @@ const Feed = () => {
     const token = localStorage.getItem('token');
     const fetch = async () => {
       if (!user && token) {
-        fetchUser();
+        await fetchUser();
       }
-    }
+    };
     fetch();
+  
     if (!user || !token) {
       navigate('/login');
     }
-
   }, [user, navigate, fetchUser]);
-
+  
   useEffect(() => {
-    const fetchVideos = async () => {
+    const fetchInitialVideos = async () => {
       const data = await getVideos(page);
       setVideos(data);
       setPage(prev => prev + 1);
     };
-    fetchVideos();
+    fetchInitialVideos();
   }, []);
 
   const hasPurchased = (videoId) => {
@@ -83,11 +83,10 @@ const Feed = () => {
       <div className="w-full md:w-1/4 md:h-screen flex items-center">
         <Navigation tabActive="/feed" />
       </div>
-
       <div className="w-full md:w-3/4 h-screen flex flex-col items-center overflow-y-scroll snap-y snap-mandatory scroll-smooth px-2">
         {videos.map((video) => (
-          <div key={video._id} className="w-full md:w-2/3 min-h-screen snap-start flex items-center justify-center p-4">
-            <div className="w-full md:h-[75vh] relative rounded-2xl overflow-hidden shadow-lg">
+          <div key={video._id} className="w-full md:w-1/2 min-h-screen snap-start flex items-center justify-center p-4">
+            <div className="w-full h-[75vh] flex items-center justify-center relative rounded-2xl overflow-hidden shadow-lg">
               {video.videoType === 'short' ? (
                 <video
                   src={video.videoUrl}
