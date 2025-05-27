@@ -6,6 +6,7 @@ const Video = require("../models/Video");
 const uploadToS3 = require("../services/awsUploader");
 const fs = require("fs");
 const User = require("../models/User");
+const Gift = require("../models/gift");
 
 const uploadFields = upload.fields([
   { name: "videoFile", maxCount: 1 },
@@ -117,6 +118,31 @@ router.post("/comment", verifyToken, async (req, res) => {
     await video.save();
 
     res.status(200).json({ message: "Comment added successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/gift", verifyToken, async (req, res) => {
+  try {
+    const { videoId, amount, comment } = req.body;
+    const user = await User.findById(req.userId);
+    const video = await Video.findById(videoId);
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    if (user.balance < amount) {
+      return res.status(400).json({ message: "Insufficient balance" });
+    }
+
+    user.balance -= amount;
+    await user.save();
+
+    const gift = new Gift({ videoId, amount, comment, userId: user._id });
+    await gift.save();
+
+    res.status(200).json({ message: "Gift sent successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -16,7 +16,11 @@ const Feed = () => {
   const [commentModalOpen, setCommentModalOpen] = useState(false);
   const [comment, setComment] = useState('');
   const [commentVideo, setCommentVideo] = useState(null);
-  const { getVideos, purchaseVideo, addComment } = useVideo();
+  const [giftModalOpen, setGiftModalOpen] = useState(false);
+  const [giftVideo, setGiftVideo] = useState(null);
+  const [giftAmount, setGiftAmount] = useState(0);
+  const [giftComment, setGiftComment] = useState('');
+  const { getVideos, purchaseVideo, addComment, sendGift } = useVideo();
   const { user } = useUserAuth();
 
   useEffect(() => {
@@ -101,6 +105,10 @@ const Feed = () => {
                   setCommentVideo(video);
                   setCommentModalOpen(true);
                 }}>View comments</p>
+                <p className="text-sm w-fit cursor-pointer backdrop-blur-lg bg-white/20 border border-white/30 px-3 py-1 rounded-full" onClick={() => {
+                  setGiftVideo(video);
+                  setGiftModalOpen(true);
+                }}>Gift Creator</p>
               </div>
 
               <div className="absolute top-4 right-4">
@@ -210,6 +218,49 @@ const Feed = () => {
                   <p className="text-sm">{comment.content}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {giftModalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-2xl max-w-lg w-full shadow-xl border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Gift Video</h2>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm">Amount</p>
+              <input
+                type="number"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none"
+                placeholder="Enter amount"
+                min={1}
+                value={giftAmount}
+                onChange={(e) => setGiftAmount(e.target.value)}
+              />
+              <p className="text-sm">Comment</p>
+              <input
+                type="text"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none"
+                value={giftComment}
+                onChange={(e) => setGiftComment(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+              className="px-4 py-1 rounded-lg bg-blue-100 text-blue-800 border border-blue-600 hover:bg-blue-200 font-semibold disabled:opacity-50"
+              onClick={() => {
+                sendGift(giftVideo._id, giftAmount, giftComment);
+                setGiftModalOpen(false);
+              }}
+              >
+                Gift
+              </button>
+              <button
+                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 font-medium"
+                onClick={() => setGiftModalOpen(false)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

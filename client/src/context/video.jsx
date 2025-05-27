@@ -87,8 +87,31 @@ export const VideoProvider = ({children}) => {
             return false;
         }
     }
+
+    const sendGift = async (videoId, amount, comment) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${serverUrl}/api/videos/gift`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({videoId, amount, comment})
+            })
+
+            const data = await response.json();
+            console.log(data);
+
+            return data.message === "Gift sent successfully";
+        } catch (error) {
+            console.error("Error sending gift:", error);
+            return false;
+        }
+    }
+
     return (
-        <VideoContext.Provider value={{uploadVideo, getVideos, purchaseVideo, addComment}}>
+        <VideoContext.Provider value={{uploadVideo, getVideos, purchaseVideo, addComment, sendGift}}>
             {children}
         </VideoContext.Provider>
     )
