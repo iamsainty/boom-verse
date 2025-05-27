@@ -13,8 +13,8 @@ const tabs = [
     icon: <MdSlowMotionVideo size={18} />
   },
   {
-    name: 'Create',
-    path: '/create',
+    name: 'Upload',
+    path: '/upload',
     icon: <AiOutlineVideoCameraAdd size={18} />
   },
   {
@@ -89,7 +89,7 @@ const Navigation = ({ tabActive }) => {
         </button>
       </nav>
     </aside>
-    <div className="md:hidden w-full absolute bottom-0 p-4 bg-white border-t border-gray-400 shadow-sm">
+    <div className="md:hidden w-full fixed bottom-0 p-4 bg-white border-t border-gray-400 shadow-sm">
       <div className="flex items-center justify-evenly w-full space-x-1.5">
         {tabs.map((tab) => {
           const isActive = tab.path === tabActive;

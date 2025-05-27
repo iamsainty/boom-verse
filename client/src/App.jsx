@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import './index.css';
 import { UserAuthProvider } from './context/userAuth';
 import Feed from './pages/Feed';
+import Upload from './pages/Upload';
 function App() {
 
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/feed" element={<Feed />} /> 
+        <Route path="/upload" element={<Upload />} />
       </Routes>
       </UserAuthProvider>
     </Router>
