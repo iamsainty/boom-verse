@@ -5,6 +5,7 @@ import { MdOutlinePowerSettingsNew, MdSlowMotionVideo } from "react-icons/md";
 import { LuSettings2 } from "react-icons/lu";
 import { FiUser } from "react-icons/fi";
 import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import { AiOutlineDollar } from "react-icons/ai";
 
 const tabs = [
   {
@@ -53,12 +54,13 @@ const Navigation = ({ tabActive }) => {
     <>
     <aside className="fixed left-0 w-1/4 h-[80vh] p-10 flex-col items-center gap-8 hidden md:flex">
       {/* User Info */}
-      <div className="flex flex-col items-center text-center">
+      <div className="flex flex-col items-center text-center gap-2">
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mb-2 bg-blue-100 text-blue-600">
           {user.name.charAt(0)}
         </div>
         <h1 className="text-lg font-semibold">{user.name}</h1>
         <p className="text-sm text-gray-500">@{user.username}</p>
+        <p className="text-sm flex items-center gap-2 bg-blue-100 text-blue-600 border border-blue-600 font-medium px-2 py-1 rounded-full"><AiOutlineDollar /> {user.balance}</p>
       </div>
 
       {/* Navigation Tabs */}
