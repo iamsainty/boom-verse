@@ -13,8 +13,10 @@ const Feed = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [purchasedVideos, setPurchasedVideos] = useState([]);
-
-  const { getVideos, purchaseVideo } = useVideo();
+  const [commentModalOpen, setCommentModalOpen] = useState(false);
+  const [comment, setComment] = useState('');
+  const [commentVideo, setCommentVideo] = useState(null);
+  const { getVideos, purchaseVideo, addComment } = useVideo();
   const { user } = useUserAuth();
 
   useEffect(() => {
@@ -89,12 +91,16 @@ const Feed = () => {
                 />
               )}
 
-              <div className="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/60 to-transparent text-white w-full space-y-1">
+              <div className="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/60 to-transparent text-white w-full space-y-2">
                 <p className="font-semibold">@{video.creator.username}</p>
                 <p className="text-sm">{video.title}</p>
                 {video.videoType === 'short' && (
                   <p className="text-sm">{video.description.slice(0, 50)}...</p>
                 )}
+                <p className="text-sm w-fit cursor-pointer backdrop-blur-lg bg-white/20 border border-white/30 px-3 py-1 rounded-full" onClick={() => {
+                  setCommentVideo(video);
+                  setCommentModalOpen(true);
+                }}>View comments</p>
               </div>
 
               <div className="absolute top-4 right-4">
@@ -156,6 +162,54 @@ const Feed = () => {
               >
                 Confirm
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {commentModalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-2xl max-w-lg w-full shadow-xl border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Comment</h2>
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <div className="flex justify-end gap-3 mt-6">
+            <button
+              className="px-4 py-1 rounded-lg bg-blue-100 text-blue-800 border border-blue-600 hover:bg-blue-200 font-semibold disabled:opacity-50"
+              onClick={() => {
+                addComment(commentVideo._id, comment);
+                setComment('');
+                commentVideo.comments.push({
+                  username: user.username,
+                  content: comment,
+                  createdAt: new Date(),
+                });
+              }}
+            >
+              Submit
+            </button>
+            <button
+              className="px-4 py-1 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 font-medium"
+              onClick={() => setCommentModalOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="flex flex-col gap-2 mt-6">
+              {commentVideo.comments.length > 0 && (
+                <p className="text-sm font-semibold">Recent comments</p>
+              )}
+              {commentVideo.comments.map((comment) => (
+                <div key={comment._id} className="flex flex-col bg-blue-50 border border-blue-200 gap-1 p-2 rounded-lg">
+                  <p className="text-sm font-semibold">{comment.username}</p>
+                  <p className="text-sm">{comment.content}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

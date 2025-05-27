@@ -99,4 +99,27 @@ router.post("/purchase", verifyToken, async (req, res) => {
   }
 });
 
+router.post("/comment", verifyToken, async (req, res) => {
+  try {
+    const { videoId, comment } = req.body;
+    const user = await User.findById(req.userId);
+    const video = await Video.findById(videoId);
+
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    video.comments.push({
+      username: user.username,
+      content: comment,
+      createdAt: new Date(),
+    });
+    await video.save();
+
+    res.status(200).json({ message: "Comment added successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

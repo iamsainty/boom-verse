@@ -66,8 +66,29 @@ export const VideoProvider = ({children}) => {
         }
     }
 
+    const addComment = async (videoId, comment) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${serverUrl}/api/videos/comment`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({videoId, comment})
+            })
+
+            const data = await response.json();
+            console.log(data);
+
+            return data.message === "Comment added successfully";
+        } catch (error) {
+            console.error("Error adding comment:", error);
+            return false;
+        }
+    }
     return (
-        <VideoContext.Provider value={{uploadVideo, getVideos, purchaseVideo}}>
+        <VideoContext.Provider value={{uploadVideo, getVideos, purchaseVideo, addComment}}>
             {children}
         </VideoContext.Provider>
     )
