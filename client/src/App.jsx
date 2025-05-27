@@ -7,6 +7,8 @@ import { UserAuthProvider } from './context/userAuth';
 import Feed from './pages/Feed';
 import Upload from './pages/Upload';
 import { VideoProvider } from './context/video';
+import Profile from './pages/Profile';
+import Setting from './pages/Setting';
 function App() {
 
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/feed" element={<Feed />} /> 
         <Route path="/upload" element={<Upload />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Setting />} />
       </Routes>
       </VideoProvider>
       </UserAuthProvider>

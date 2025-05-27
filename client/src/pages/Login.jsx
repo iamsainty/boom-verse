@@ -15,12 +15,18 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUser();
-
-    if (user) {
+    const token = localStorage.getItem('token');
+    const fetch = async () => {
+      if (token) {
+        fetchUser();
+      }
+    }
+    fetch();
+    if(user && token) {
+      console.log('user', user);
       navigate('/feed');
     }
-  }, [user, navigate, fetchUser]);
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,6 +38,7 @@ export default function Login() {
       const result = await login(form.username, form.password);
       if (result) {
         navigate('/feed');
+        window.location.reload();
       }
       else {
         alert(result);

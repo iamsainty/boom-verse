@@ -5,6 +5,7 @@ import useUserAuth from '../context/userAuth';
 import { IoPlayOutline } from "react-icons/io5";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AiOutlineDollar } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 
 const Feed = () => {
   const [videos, setVideos] = useState([]);
@@ -21,7 +22,23 @@ const Feed = () => {
   const [giftAmount, setGiftAmount] = useState(0);
   const [giftComment, setGiftComment] = useState('');
   const { getVideos, purchaseVideo, addComment, sendGift } = useVideo();
-  const { user } = useUserAuth();
+  const { user, fetchUser } = useUserAuth();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const fetch = async () => {
+      if (!user && token) {
+        fetchUser();
+      }
+    }
+    fetch();
+    if (!user || !token) {
+      navigate('/login');
+    }
+
+  }, [user, navigate, fetchUser]);
 
   useEffect(() => {
     const fetchVideos = async () => {

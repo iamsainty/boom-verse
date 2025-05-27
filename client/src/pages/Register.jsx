@@ -16,9 +16,15 @@ export default function Register() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUser();
+    const token = localStorage.getItem('token');
+    const fetch = async () => {
+      if (token) {
+        fetchUser();
+      }
+    }
+    fetch();
 
-    if (user) {
+    if (user && token) {
       navigate('/feed');
     }
   }, [user, navigate, fetchUser]);
@@ -33,6 +39,7 @@ export default function Register() {
       const result = await register(form.name, form.username, form.password);
       if (result) {
         navigate('/feed');
+        window.location.reload();
       }
       else {
         alert(result);
