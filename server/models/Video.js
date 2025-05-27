@@ -2,8 +2,12 @@ const mongoose = require("mongoose");
 
 const videoSchema = new mongoose.Schema({
   creator: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    id: {
+      type: String,
+    },
+    username: {
+      type: String,
+    },
   },
   title: {
     type: String,

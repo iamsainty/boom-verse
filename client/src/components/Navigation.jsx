@@ -51,7 +51,7 @@ const Navigation = ({ tabActive }) => {
 
   return (
     <>
-    <aside className="sticky top-0 w-full h-[80vh] p-6 flex-col items-center gap-8 hidden md:flex">
+    <aside className="fixed left-0 w-1/4 h-[80vh] p-10 flex-col items-center gap-8 hidden md:flex">
       {/* User Info */}
       <div className="flex flex-col items-center text-center">
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mb-2 bg-blue-100 text-blue-600">

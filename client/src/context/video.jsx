@@ -26,8 +26,25 @@ export const VideoProvider = ({children}) => {
         }
     }
 
+    const getVideos = async (page) => {
+        try {
+            const response = await fetch(`${serverUrl}/api/videos/getvideos/${page}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await response.json();
+            return data.videos;
+        } catch (error) {
+            console.error("Error fetching videos:", error);
+            throw error;
+        }
+    }
+
     return (
-        <VideoContext.Provider value={{uploadVideo}}>
+        <VideoContext.Provider value={{uploadVideo, getVideos}}>
             {children}
         </VideoContext.Provider>
     )
