@@ -75,4 +75,28 @@ router.get("/getvideos/:page", async (req, res) => {
   }
 });
 
+router.post("/purchase", verifyToken, async (req, res) => {
+  try {
+    const { videoId } = req.body;
+    const user = await User.findById(req.userId);
+    const video = await Video.findById(videoId);
+
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    if (user.balance < video.price) {
+      return res.status(400).json({ message: "Insufficient balance" });
+    }
+
+    user.balance -= video.price;
+    user.purchasedVideos.push({ videoId, purchasedAt: new Date() });
+    await user.save();
+
+    res.status(200).json({ message: "Video purchased successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

@@ -43,8 +43,31 @@ export const VideoProvider = ({children}) => {
         }
     }
 
+    const purchaseVideo = async (videoId) => {
+        try {
+            const token = localStorage.getItem("token");
+            console.log(videoId);
+            const response = await fetch(`${serverUrl}/api/videos/purchase`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({videoId})
+            })
+
+            const data = await response.json();
+            console.log(data);
+
+            return data.message === "Video purchased successfully";
+        } catch (error) {
+            console.error("Error purchasing video:", error);
+            return false;
+        }
+    }
+
     return (
-        <VideoContext.Provider value={{uploadVideo, getVideos}}>
+        <VideoContext.Provider value={{uploadVideo, getVideos, purchaseVideo}}>
             {children}
         </VideoContext.Provider>
     )
