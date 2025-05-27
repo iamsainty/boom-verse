@@ -19,7 +19,6 @@ export const UserAuthProvider = ({ children }) => {
     try {
 
       const token = localStorage.getItem("token");
-      console.log(token);
       const response = await fetch(`${serverUrl}/api/auth/profile`, {
         method: "GET",
         headers: {
@@ -28,7 +27,6 @@ export const UserAuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
-      console.log(data);
       setUser(data);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -48,7 +46,6 @@ export const UserAuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (data.token) {
-        console.log(data);
         localStorage.setItem("token", data.token);
         fetchUser();
         return true;

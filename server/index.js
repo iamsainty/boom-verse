@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectToMongoDB = require("./config/mongodb");
 const userAuthRoutes = require("./routes/userAuth");
+const videoRoutes = require("./routes/video");
 dotenv.config();
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 connectToMongoDB();
 
 app.use("/api/auth", userAuthRoutes);
+app.use("/api/videos", videoRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World");

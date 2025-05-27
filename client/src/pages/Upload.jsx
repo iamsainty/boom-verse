@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navigation from '../components/Navigation';
-
+import useVideo from '../context/video';
 const Upload = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -21,13 +21,37 @@ const Upload = () => {
     }
   };
 
+  const {uploadVideo} = useVideo();
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("videoType", videoType);
+    formData.append("isPaid", price > 0);
+    formData.append("price", price);
+    if(videoType === 'short') {
+      formData.append("videoFile", videoFile);
+    } else {
+      formData.append("videoUrl", videoUrl);
+      formData.append("thumbnail", thumbnail);
+    }
+    
+    try {
+      const result = await uploadVideo(formData);
+      console.log(result);
+    } catch (error) {
+      console.error("Error uploading video:", error);
+    }
+  }
+
   return (
     <div className='flex flex-col md:flex-row'>
       <div className='w-full md:w-1/5 md:h-screen flex items-center'>
         <Navigation tabActive="/upload" />
       </div>
 
-      <div className="w-full md:w-4/5 p-6 md:p-12 space-y-10">
+      <div className="w-full md:w-4/5 p-6 md:p-12 space-y-10 my-10 mb-20">
         {/* Header */}
         <div className="space-y-1">
           <h1 className="text-3xl font-bold text-gray-900">Upload</h1>
@@ -143,7 +167,7 @@ const Upload = () => {
         )}
 
         {/* Upload Button */}
-        <button className="bg-blue-100 text-blue-600 border border-blue-600 px-6 py-3 rounded-lg hover:bg-blue-300 transition font-semibold">
+        <button className="bg-blue-100 text-blue-600 border border-blue-600 px-6 py-3 rounded-lg hover:bg-blue-300 transition font-semibold" onClick={handleUpload}>
           Upload
         </button>
       </div>

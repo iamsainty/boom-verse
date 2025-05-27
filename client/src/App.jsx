@@ -6,11 +6,13 @@ import './index.css';
 import { UserAuthProvider } from './context/userAuth';
 import Feed from './pages/Feed';
 import Upload from './pages/Upload';
+import { VideoProvider } from './context/video';
 function App() {
 
   return (
     <Router>
       <UserAuthProvider>
+        <VideoProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
@@ -18,6 +20,7 @@ function App() {
         <Route path="/feed" element={<Feed />} /> 
         <Route path="/upload" element={<Upload />} />
       </Routes>
+      </VideoProvider>
       </UserAuthProvider>
     </Router>
   )
